@@ -1,0 +1,1 @@
+javascript:void function(){window.location.replace(window.location.href+"%26flags=FCB.CommandChecker=true%26ribbondebug=true")}();
