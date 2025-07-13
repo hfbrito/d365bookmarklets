@@ -1,53 +1,45 @@
 <script type="text/javascript">
-        // Function to load bookmarklets from manually specified JS files
+        // Function to load bookmarklets and update manual divs
         async function loadBookmarklets() {
-            const repoOwner = 'hfbrito'; // Replace with your GitHub username
-            const repoName = 'd365bookmarklets'; // Replace with your repository name
-            const branch = 'main'; // Replace with your branch if not 'main' (e.g., 'gh-pages')
-            // Manually specify the JavaScript files to include
+            const repoOwner = 'hfbrito';
+            const repoName = 'd365bookmarklets';
+            const branch = 'main';
             const jsFiles = [
                 'scripts/Get GUID.js',
                 'scripts/Enable CommandChecker.js'
-                // Add more file paths here, e.g., 'scripts/bookmarklet3.js'
+                // Add more file paths here, e.g., 'scripts/NewBookmarklet.js'
             ];
-            const container = document.querySelector('.container');
-            const dynamicSection = document.createElement('section');
-            dynamicSection.innerHTML = '<h2>Bookmarklets Dinâmicos</h2>';
-            container.appendChild(dynamicSection);
 
+            const bookmarkletMap = {};
+
+            // Fetch and process each JS file
             for (const file of jsFiles) {
                 try {
-                    // Fetch raw content of each .js file
                     const rawResponse = await fetch(`https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${file}`);
                     if (!rawResponse.ok) throw new Error(`Failed to fetch ${file}`);
                     let jsCode = await rawResponse.text();
-
-                    // Remove comments and minify (basic minification)
                     jsCode = jsCode.replace(/\/\/.*$/gm, '') // Remove single-line comments
                                    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
                                    .replace(/\s+/g, ' ').trim(); // Collapse whitespace
-
-                    // Create bookmarklet URL
                     const bookmarkletCode = `javascript:(function(){${encodeURIComponent(jsCode)}})();`;
-
-                    // Create div for bookmarklet
-                    const div = document.createElement('div');
-                    div.className = 'bookmarklet';
                     const fileName = file.split('/').pop().replace('.js', '');
-                    div.innerHTML = `
-                        <h2>${fileName}</h2>
-                        <p>Bookmarklet gerado a partir do arquivo ${file}.</p>
-                        <a href="${bookmarkletCode}">Executar ${fileName}</a>
-                    `;
-                    dynamicSection.appendChild(div);
+                    bookmarkletMap[fileName] = bookmarkletCode;
                 } catch (error) {
                     console.error(`Erro ao carregar ${file}:`, error);
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'bookmarklet';
-                    errorDiv.innerHTML = `<p>Erro ao carregar ${file}. Verifique o console para mais detalhes.</p>`;
-                    dynamicSection.appendChild(errorDiv);
                 }
             }
+
+            // Update divs with matching data-bookmarklet attributes
+            const dynamicDivs = document.querySelectorAll('.bookmarklet[data-bookmarklet]');
+            dynamicDivs.forEach(div => {
+                const bookmarkletName = div.getAttribute('data-bookmarklet');
+                const link = div.querySelector('a');
+                if (bookmarkletMap[bookmarkletName]) {
+                    link.href = bookmarkletMap[bookmarkletName];
+                } else {
+                    div.innerHTML = `<p>Erro: Bookmarklet ${bookmarkletName} não encontrado ou falhou ao carregar. Verifique o console.</p>`;
+                }
+            });
         }
 
         // Run the function when the page loads
@@ -96,9 +88,6 @@
             margin: 0 0 0.5rem;
             font-size: 1.5rem;
         }
-        .bookmarklet p {
-            margin: 0 0 1rem;
-        }
         .bookmarklet a {
             display: inline-block;
             padding: 0.5rem 1rem;
@@ -106,6 +95,10 @@
             color: #fff;
             text-decoration: none;
             border-radius: 3px;
+            margin: 0.5rem 0;
+        }
+        .bookmarklet p {
+            margin: 0;
         }
         .bookmarklet a:hover {
             background: #2980b9;
@@ -129,48 +122,30 @@
 </head>
 <body>
     <header>
-        <h1>Meus Bookmarklets</h1>
+        <h1>D365 - Meus Bookmarklets</h1>
     </header>
     <div class="container">
         <section>
-            <h2>Bookmarklets de Estilo</h2>
-            <div class="bookmarklet">
-                <h2>Mudar Cor de Fundo</h2>
-                <p>Este bookmarklet muda a cor de fundo da página.</p>
-                <a href="javascript:(function(){document.body.style.background='green';})();">Mudar Cor de Fundo</a>
-            </div>
-            <div class="bookmarklet">
-                <h2>Aumentar Fonte</h2>
-                <p>Este bookmarklet aumenta o tamanho da fonte de todos os elementos da página.</p>
-                <a href="javascript:(function(){document.body.style.fontSize='1.2em';})();">Aumentar Fonte</a>
-            </div>
-            <div class="bookmarklet">
-                <h2>Modo Escuro</h2>
-                <p>Este bookmarklet aplica um tema escuro básico à página.</p>
-                <a href="javascript:(function(){document.body.style.background='black';document.body.style.color='white';})();">Modo Escuro</a>
+            <h2>Utilidades em Forms</h2>
+            <div class="bookmarklet" data-bookmarklet="Get GUID">
+                <h2>Get GUID</h2>
+                <a href="#">Get GUID</a>
+                <p>Recupera o GUID do registro atual.</p>
             </div>
         </section>
         <section>
-            <h2>Bookmarklets de Texto</h2>
-            <div class="bookmarklet">
-                <h2>Substituir Texto</h2>
-                <p>Este bookmarklet substitui todas as instâncias de "nuvem" por "chuva" na página.</p>
-                <a href="javascript:(function(){document.body.innerHTML=document.body.innerHTML.replace(/nuvem/g,'chuva').replace(/Nuvem/g,'chuva');})();">Substituir Texto</a>
-            </div>
-            <div class="bookmarklet">
-                <h2>Destacar Texto</h2>
-                <p>Este bookmarklet destaca todas as instâncias de "chuva" com fundo amarelo.</p>
-                <a href="javascript:(function(){document.body.innerHTML=document.body.innerHTML.replace(/chuva/g,'<span style=\'background-color:yellow;\'>chuva</span>').replace(/chuva/g,'<span style=\'background-color:yellow;\'>chuva</span>');})();">Destacar Texto</a>
-            </div>
-            <div class="bookmarklet">
-                <h2>Remover Texto</h2>
-                <p>Este bookmarklet remove todas as instâncias de "chuva" da página.</p>
-                <a href="javascript:(function(){document.body.innerHTML=document.body.innerHTML.replace(/chuva/gi,'');})();">Remover Texto</a>
+            <h2>Diversos</h2>
+            <div class="bookmarklet" data-bookmarklet="Enable CommandChecker">
+                <h2>Enable CommandChecker</h2>
+                <a href="#">Enable CommandChecker</a>
+                <p>Ativa o CommandChecker para depuração.</p>
             </div>
         </section>
     </div>
+    <!--
     <footer>
-        <p>© 2025 Seus Bookmarklets. Todos os direitos reservados.</p>
+        <p>© 2025 Meus Bookmarklets. Todos os direitos reservados.</p>
     </footer>
+    -->
 </body>
 </html>
