@@ -72,17 +72,30 @@
             font-size: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 85%;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 0.5rem;
             padding-bottom: 2rem;
+        }
+        section {
+            margin-bottom: 2rem;
+        }
+        section h2 {
+            margin: 0 0 1rem;
+            font-size: 1.8rem;
+        }
+        .bookmarklet-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         .bookmarklet {
             background: #fff;
             border: 1px solid #ddd;
             padding: 1rem;
-            margin-bottom: 1rem;
             border-radius: 5px;
+            width: calc(50% - 0.5rem);
+            box-sizing: border-box;
         }
         .bookmarklet h2 {
             margin: 0 0 0.5rem;
@@ -114,37 +127,53 @@
             header h1 {
                 font-size: 1.5rem;
             }
+            section h2 {
+                font-size: 1.5rem;
+            }
             .bookmarklet h2 {
                 font-size: 1.2rem;
+            }
+            .bookmarklet {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>D365 - Meus Bookmarklets</h1>
+        <h1>D365 - Bookmarklets</h1>
     </header>
     <div class="container">
         <section>
             <h2>Utilidades em Forms</h2>
-            <div class="bookmarklet" data-bookmarklet="Get GUID">
-                <h2>Get GUID</h2>
-                <a href="#">Get GUID</a>
-                <p>Recupera o GUID do registro atual.</p>
+            <div class="bookmarklet-container">
+				
+				<!--Adicionar divs de bookmarklets aqui-->
+                <div class="bookmarklet" data-bookmarklet="Get GUID">
+                    <h2>Get GUID</h2>
+                    <a href="#">Get GUID</a>
+                    <p>Recupera o GUID do registro atual.</p>
+                </div>
+				
             </div>
         </section>
         <section>
             <h2>Diversos</h2>
-            <div class="bookmarklet" data-bookmarklet="Enable CommandChecker">
-                <h2>Enable CommandChecker</h2>
-                <a href="#">Enable CommandChecker</a>
-                <p>Ativa o CommandChecker para depuração.</p>
+            <div class="bookmarklet-container">
+			
+				<!--Adicionar divs de bookmarklets aqui-->
+                <div class="bookmarklet" data-bookmarklet="Enable CommandChecker">
+                    <h2>Enable CommandChecker</h2>
+                    <a href="#">Enable CommandChecker</a>
+                    <p>Ativa o CommandChecker para depuração.</p>
+                </div>
+				
             </div>
         </section>
     </div>
     <!--
     <footer>
-        <p>© 2025 Meus Bookmarklets. Todos os direitos reservados.</p>
+        <p>© 2025 D365 Bookmarklets. Todos os direitos reservados.</p>
     </footer>
     -->
 </body>
