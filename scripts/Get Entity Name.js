@@ -1,0 +1,1 @@
+javascript:void%0Afunction%28%29%7Blet info%3Dprompt%28"Entity name"%2CXrm.Page.data.entity.getEntityName%28%29%29%3Bnavigator.clipboard.writeText%28info%29.then%28function%28%29%7Bconsole.log%28"copied%3A "+info%29%3B%7D%2Cfunction%28err%29%7Bconsole.log%28"Failed to copy%3A "+err%29%3B%7D%29%3B%7D%28%29%3B
