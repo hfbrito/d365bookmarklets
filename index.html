@@ -6,27 +6,31 @@
             const branch = 'main';
             const jsFiles = [
                 'scripts/Get GUID.js',
-                'scripts/Enable CommandChecker.js'
-                'scripts/Form - Show Lookup Guid on Label.js'
-                'scripts/Get Entity Name.js'
-                'scripts/Get Entity Plural Name.js'
-                'scripts/Query Entity Label by Logical Name.js'
-                'scripts/Open record in selected App v.1.js'
+                'scripts/Enable CommandChecker.js',
+                'scripts/Form - Show Lookup Guid on Label.js',
+                'scripts/Get Entity Name.js',
+                'scripts/Get Entity Plural Name.js',
+                'scripts/Query Entity Label by Logical Name.js',
+                'scripts/Open record in selected App v.1.js',
+                'scripts/Explorador de Assuntos.js',
+                'scripts/Open record in selected App v.2.js',
+                'scripts/Listar Entidades.js',
+                'scripts/Open Record Entity list.js',
+                'scripts/Get Entity Infos.js',
+                'scripts/Get Form name.js',
+                'scripts/Update - Setar registro Ativo.js',
+                'scripts/JSON Pretty Print.js'
                 // Add more file paths here, e.g., 'scripts/NewBookmarklet.js'
             ];
 
             const bookmarkletMap = {};
-
+			debugger;
             // Fetch and process each JS file
             for (const file of jsFiles) {
                 try {
                     const rawResponse = await fetch(`https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${file}`);
                     if (!rawResponse.ok) throw new Error(`Failed to fetch ${file}`);
-                    let jsCode = await rawResponse.text();
-                    jsCode = jsCode.replace(/\/\/.*$/gm, '') // Remove single-line comments
-                                   .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
-                                   .replace(/\s+/g, ' ').trim(); // Collapse whitespace
-                    const bookmarkletCode = `javascript:(function(){${encodeURIComponent(jsCode)}})();`;
+                    let bookmarkletCode = await rawResponse.text();
                     const fileName = file.split('/').pop().replace('.js', '');
                     bookmarkletMap[fileName] = bookmarkletCode;
                 } catch (error) {
@@ -154,22 +158,34 @@
             <div class="bookmarklet-container">
 				
 				<!--Adicionar divs de bookmarklets aqui-->
-                <div class="bookmarklet" data-bookmarklet="Get GUID">
+                <div class="bookmarklet" data-bookmarklet="Listar Entidades">
+                    <h2>Listar Entidades</h2>
+                    <a href="#">Listar Entidades</a>
+                    <p>Popup das entidades e abre a view do selecionado.</p>
+                </div>
+				
+				<div class="bookmarklet" data-bookmarklet="Open record in selected App v.2">
+                    <h2>Open record in selected App v.2</h2>
+                    <a href="#">Open record in selected App v.2</a>
+                    <p>Abre registro atual no app selecionado.</p>
+                </div>
+								
+				<div class="bookmarklet" data-bookmarklet="Open Record Entity list">
+                    <h2>Open Record Entity list</h2>
+                    <a href="#">Open Record Entity list</a>
+                    <p>Abre view da entidade do registro atual.</p>
+                </div>
+				
+				<div class="bookmarklet" data-bookmarklet="Get Entity Infos">
+                    <h2>Get Entity Infos</h2>
+                    <a href="#">Get Entity Infos</a>
+                    <p>Recupera informações da entidade atual do Form/View.</p>
+                </div>
+
+				<div class="bookmarklet" data-bookmarklet="Get GUID">
                     <h2>Get GUID</h2>
                     <a href="#">Get GUID</a>
                     <p>Recupera o GUID do registro atual.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Get Entity Name">
-                    <h2>Get Entity Name</h2>
-                    <a href="#">Get Entity Name</a>
-                    <p>Recupera nome da entidade do form.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Get Entity Plural Name">
-                    <h2>Get Entity Plural Name</h2>
-                    <a href="#">Get Entity Plural Name</a>
-                    <p>Recupera nome plural da entidade do form.</p>
                 </div>
 				
 				<div class="bookmarklet" data-bookmarklet="Form - Show Lookup Guid on Label">
@@ -184,14 +200,23 @@
                     <p>Recupera nome da entidade baseado no nome lógico inserido.</p>
                 </div>
 				
-				<div class="bookmarklet" data-bookmarklet="Open record in selected App v.1">
-                    <h2>Open record in selected App v.1</h2>
-                    <a href="#">Open record in selected App v.1</a>
-                    <p>Abre registro atual no app selecionado.</p>
+            </div>
+        </section>
+		
+		<section>
+            <h2>Updates</h2>
+            <div class="bookmarklet-container">
+			
+				<!--Adicionar divs de bookmarklets aqui-->
+                <div class="bookmarklet" data-bookmarklet="Update - Setar registro Ativo">
+                    <h2>Update - Setar registro Ativo</h2>
+                    <a href="#">Update - Setar registro Ativo</a>
+                    <p>Atualiza Status do registro atual para "Ativo".</p>
                 </div>
 				
             </div>
         </section>
+		
         <section>
             <h2>Diversos</h2>
             <div class="bookmarklet-container">
@@ -203,8 +228,55 @@
                     <p>Ativa o CommandChecker para depuração.</p>
                 </div>
 				
+				<div class="bookmarklet" data-bookmarklet="Explorador de Assuntos">
+                    <h2>Explorador de Assuntos</h2>
+                    <a href="#">Explorador de Assuntos</a>
+                    <p>Popup com a árvore de assuntos, permitindo busca, cópia de Guid e subárvore.</p>
+                </div>
+				
             </div>
         </section>
+		
+		<section>
+            <h2>Utilidades (não relacionadas ao D365)</h2>
+            <div class="bookmarklet-container">
+			
+				<!--Adicionar divs de bookmarklets aqui-->
+                <div class="bookmarklet" data-bookmarklet="JSON Pretty Print">
+                    <h2>JSON Pretty Print</h2>
+                    <a href="#">JSON Pretty Print</a>
+                    <p>Formatação de JSON.</p>
+                </div>
+				
+            </div>
+        </section>
+		
+		<section>
+            <h2>Arquivados (versões antigas ou substituidas)</h2>
+            <div class="bookmarklet-container">
+			
+				<!--Adicionar divs de bookmarklets aqui-->
+				<div class="bookmarklet" data-bookmarklet="Get Entity Name">
+                    <h2>Get Entity Name</h2>
+                    <a href="#">Get Entity Name</a>
+                    <p>Recupera nome da entidade do form.</p>
+                </div>
+				
+				<div class="bookmarklet" data-bookmarklet="Get Entity Plural Name">
+                    <h2>Get Entity Plural Name</h2>
+                    <a href="#">Get Entity Plural Name</a>
+                    <p>Recupera nome plural da entidade do form.</p>
+                </div>
+				
+				<div class="bookmarklet" data-bookmarklet="Open record in selected App v.1">
+                    <h2>Open record in selected App v.1</h2>
+                    <a href="#">Open record in selected App v.1</a>
+                    <p>Abre registro atual no app selecionado.</p>
+                </div>
+				
+            </div>
+        </section>
+		
     </div>
     <!--
     <footer>
