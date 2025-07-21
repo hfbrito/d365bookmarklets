@@ -1,4 +1,301 @@
-<script type="text/javascript">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D365 - Bookmarklets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Fluent UI Inspired Global Styles */
+        :root {
+            --fluent-blue-primary: #0078d4; /* Microsoft Blue */
+            --fluent-blue-hover: #005a9e;
+            --fluent-grey-background: #f3f2f1; /* Lighter grey for background */
+            --fluent-grey-text: #323130; /* Darker grey for text */
+            --fluent-grey-border: #edebe9; /* Light grey for borders */
+            --fluent-white: #ffffff;
+            --fluent-box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.13), 0 2.5px 5.5px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            --fluent-border-radius: 4px;
+            --fluent-font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+            --fluent-spacing-l: 24px;
+            --fluent-spacing-m: 16px;
+            --fluent-spacing-s: 8px;
+        }
+
+        body {
+            font-family: var(--fluent-font-family);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--fluent-grey-background);
+            color: var(--fluent-grey-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: var(--fluent-white);
+            color: var(--fluent-grey-text);
+            text-align: left;
+            padding: var(--fluent-spacing-m) var(--fluent-spacing-l);
+            box-shadow: var(--fluent-box-shadow);
+            border-bottom: 1px solid var(--fluent-grey-border);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600; /* Semibold */
+            color: var(--fluent-grey-text);
+        }
+        .container {
+            max-width: 90%; /* Slightly wider */
+            margin: var(--fluent-spacing-l) auto;
+            padding: 0 var(--fluent-spacing-m);
+            flex-grow: 1; /* Allows container to take available space */
+        }
+        section {
+            margin-bottom: var(--fluent-spacing-l);
+        }
+        section h2 {
+            margin: 0 0 var(--fluent-spacing-m);
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--fluent-grey-text);
+            border-bottom: 1px solid var(--fluent-grey-border);
+            padding-bottom: var(--fluent-spacing-s);
+        }
+        .bookmarklet-container {
+            display: grid; /* Use CSS Grid for better control */
+            grid-template-columns: repeat(2, 1fr); /* Enforce two columns */
+            gap: var(--fluent-spacing-m);
+        }
+        .bookmarklet {
+            background: var(--fluent-white);
+            border: 1px solid var(--fluent-grey-border);
+            padding: var(--fluent-spacing-m);
+            border-radius: var(--fluent-border-radius);
+            box-shadow: var(--fluent-box-shadow);
+            display: flex; /* Flex container for content */
+            flex-direction: column;
+            justify-content: space-between; /* Push button to bottom if content varies */
+        }
+        .bookmarklet h2 {
+            margin: 0 0 var(--fluent-spacing-s);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--fluent-blue-primary); /* Use primary blue for title */
+            border-bottom: none; /* Remove section border from h2 */
+            padding-bottom: 0;
+        }
+        .bookmarklet p {
+            margin: 0 0 var(--fluent-spacing-s);
+            font-size: 0.95rem;
+            color: var(--fluent-grey-text);
+            flex-grow: 1; /* Allow description to take space */
+        }
+        .bookmarklet a {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: var(--fluent-blue-primary);
+            color: var(--fluent-white);
+            text-decoration: none;
+            border-radius: var(--fluent-border-radius);
+            margin-top: var(--fluent-spacing-s); /* Space above button */
+            font-weight: 600;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            border: none; /* Remove default button border */
+            cursor: pointer;
+            box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1); /* Slight button shadow */
+        }
+        .bookmarklet a:hover {
+            background: var(--fluent-blue-hover);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+        }
+        .bookmarklet a:active {
+            background: var(--fluent-blue-hover);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15); /* Pressed state */
+        }
+        .bookmarklet a:focus {
+            outline: 2px solid var(--fluent-blue-primary);
+            outline-offset: 2px;
+        }
+
+        /* Error message styling */
+        .bookmarklet p.error-message {
+            color: #d83b01; /* Fluent UI error red */
+            font-weight: 600;
+            padding: var(--fluent-spacing-s);
+            border: 1px solid #d83b01;
+            background-color: #fde7e9;
+            border-radius: var(--fluent-border-radius);
+        }
+
+        footer {
+            text-align: center;
+            padding: var(--fluent-spacing-m);
+            background: var(--fluent-white);
+            color: var(--fluent-grey-text);
+            border-top: 1px solid var(--fluent-grey-border);
+            box-shadow: 0 -0.5px 1px rgba(0, 0, 0, 0.05);
+            margin-top: var(--fluent-spacing-l);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 95%;
+            }
+            header, footer {
+                padding: var(--fluent-spacing-m);
+            }
+            header h1 {
+                font-size: 1.5rem;
+            }
+            section h2 {
+                font-size: 1.4rem;
+            }
+            .bookmarklet-container {
+                grid-template-columns: 1fr; /* Stack on smaller screens */
+            }
+            .bookmarklet {
+                width: auto; /* Remove fixed width from previous versions */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>D365 - Bookmarklets</h1>
+    </header>
+    <div class="container">
+        <section>
+            <h2>Utilidades em Forms</h2>
+            <div class="bookmarklet-container">
+
+                <div class="bookmarklet" data-bookmarklet="Listar Entidades">
+                    <h2>Listar Entidades</h2>
+                    <p>Popup das entidades e abre a view do selecionado.</p>
+                    <a href="#">Listar Entidades</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Open record in selected App v.2">
+                    <h2>Open record in selected App v.2</h2>
+                    <p>Abre registro atual no app selecionado.</p>
+                    <a href="#">Open record in selected App v.2</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Open Record Entity list">
+                    <h2>Open Record Entity list</h2>
+                    <p>Abre view da entidade do registro atual.</p>
+                    <a href="#">Open Record Entity list</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Get Entity Infos">
+                    <h2>Get Entity Infos</h2>
+                    <p>Recupera informações da entidade atual do Form/View.</p>
+                    <a href="#">Get Entity Infos</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Get GUID">
+                    <h2>Get GUID</h2>
+                    <p>Recupera o GUID do registro atual.</p>
+                    <a href="#">Get GUID</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Form - Show Lookup Guid on Label">
+                    <h2>Form - Show Lookup Guid on Label</h2>
+                    <p>Mostra Guids dos campos Lookup na label.</p>
+                    <a href="#">Form - Show Lookup Guid on Label</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Query Entity Label by Logical Name">
+                    <h2>Query Entity Label by Logical Name</h2>
+                    <p>Recupera nome da entidade baseado no nome lógico inserido.</p>
+                    <a href="#">Query Entity Label by Logical Name</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Updates</h2>
+            <div class="bookmarklet-container">
+
+                <div class="bookmarklet" data-bookmarklet="Update - Setar registro Ativo">
+                    <h2>Update - Setar registro Ativo</h2>
+                    <p>Atualiza Status do registro atual para "Ativo".</p>
+                    <a href="#">Update - Setar registro Ativo</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Diversos</h2>
+            <div class="bookmarklet-container">
+
+                <div class="bookmarklet" data-bookmarklet="Enable CommandChecker">
+                    <h2>Enable CommandChecker</h2>
+                    <p>Ativa o CommandChecker para depuração.</p>
+                    <a href="#">Enable CommandChecker</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Explorador de Assuntos">
+                    <h2>Explorador de Assuntos</h2>
+                    <p>Popup com a árvore de assuntos, permitindo busca, cópia de Guid e subárvore.</p>
+                    <a href="#">Explorador de Assuntos</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Utilidades (não relacionadas ao D365)</h2>
+            <div class="bookmarklet-container">
+
+                <div class="bookmarklet" data-bookmarklet="JSON Pretty Print">
+                    <h2>JSON Pretty Print</h2>
+                    <p>Formatação de JSON.</p>
+                    <a href="#">JSON Pretty Print</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Arquivados (versões antigas ou substituidas)</h2>
+            <div class="bookmarklet-container">
+
+                <div class="bookmarklet" data-bookmarklet="Get Entity Name">
+                    <h2>Get Entity Name</h2>
+                    <p>Recupera nome da entidade do form.</p>
+                    <a href="#">Get Entity Name</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Get Entity Plural Name">
+                    <h2>Get Entity Plural Name</h2>
+                    <p>Recupera nome plural da entidade do form.</p>
+                    <a href="#">Get Entity Plural Name</a>
+                </div>
+
+                <div class="bookmarklet" data-bookmarklet="Open record in selected App v.1">
+                    <h2>Open record in selected App v.1</h2>
+                    <p>Abre registro atual no app selecionado.</p>
+                    <a href="#">Open record in selected App v.1</a>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+    <footer>
+        <p>© 2025 D365 Bookmarklets. Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="text/javascript">
         // Function to load bookmarklets and update manual divs
         async function loadBookmarklets() {
             const repoOwner = 'hfbrito';
@@ -24,17 +321,24 @@
             ];
 
             const bookmarkletMap = {};
-			debugger;
+            debugger; // Keep this for debugging if needed
+
             // Fetch and process each JS file
             for (const file of jsFiles) {
                 try {
                     const rawResponse = await fetch(`https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${file}`);
                     if (!rawResponse.ok) throw new Error(`Failed to fetch ${file}`);
+                    // Assign the fetched text directly as it's assumed to be pre-formatted bookmarklet code
                     let bookmarkletCode = await rawResponse.text();
                     const fileName = file.split('/').pop().replace('.js', '');
                     bookmarkletMap[fileName] = bookmarkletCode;
                 } catch (error) {
                     console.error(`Erro ao carregar ${file}:`, error);
+                    // Update the specific bookmarklet div with an error message
+                    const div = document.querySelector(`.bookmarklet[data-bookmarklet="${file.split('/').pop().replace('.js', '')}"]`);
+                    if (div) {
+                        div.innerHTML = `<h2>${file.split('/').pop().replace('.js', '')}</h2><p class="error-message">Erro ao carregar: ${file.split('/').pop().replace('.js', '')}.</p>`;
+                    }
                 }
             }
 
@@ -43,245 +347,14 @@
             dynamicDivs.forEach(div => {
                 const bookmarkletName = div.getAttribute('data-bookmarklet');
                 const link = div.querySelector('a');
-                if (bookmarkletMap[bookmarkletName]) {
+                if (link && bookmarkletMap[bookmarkletName]) {
                     link.href = bookmarkletMap[bookmarkletName];
-                } else {
-                    div.innerHTML = `<p>Erro: Bookmarklet ${bookmarkletName} não encontrado ou falhou ao carregar. Verifique o console.</p>`;
                 }
             });
         }
 
         // Run the function when the page loads
         window.onload = loadBookmarklets;
-</script>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D365 - Bookmarklets</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-            min-height: 100vh;
-        }
-        header {
-            background: #2c3e50;
-            color: #fff;
-            text-align: center;
-            padding: 1rem;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
-        .container {
-            max-width: 85%;
-            margin: 2rem auto;
-            padding: 0 0.5rem;
-            padding-bottom: 2rem;
-        }
-        section {
-            margin-bottom: 2rem;
-        }
-        section h2 {
-            margin: 0 0 1rem;
-            font-size: 1.8rem;
-        }
-        .bookmarklet-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .bookmarklet {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 1rem;
-            border-radius: 5px;
-            width: calc(50% - 0.5rem);
-            box-sizing: border-box;
-        }
-        .bookmarklet h2 {
-            margin: 0 0 0.5rem;
-            font-size: 1.5rem;
-        }
-        .bookmarklet a {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 3px;
-            margin: 0.5rem 0;
-        }
-        .bookmarklet p {
-            margin: 0;
-        }
-        .bookmarklet a:hover {
-            background: #2980b9;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background: #2c3e50;
-            color: #fff;
-            width: 100%;
-        }
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.5rem;
-            }
-            section h2 {
-                font-size: 1.5rem;
-            }
-            .bookmarklet h2 {
-                font-size: 1.2rem;
-            }
-            .bookmarklet {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>D365 - Bookmarklets</h1>
-    </header>
-    <div class="container">
-        <section>
-            <h2>Utilidades em Forms</h2>
-            <div class="bookmarklet-container">
-				
-				<!--Adicionar divs de bookmarklets aqui-->
-                <div class="bookmarklet" data-bookmarklet="Listar Entidades">
-                    <h2>Listar Entidades</h2>
-                    <a href="#">Listar Entidades</a>
-                    <p>Popup das entidades e abre a view do selecionado.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Open record in selected App v.2">
-                    <h2>Open record in selected App v.2</h2>
-                    <a href="#">Open record in selected App v.2</a>
-                    <p>Abre registro atual no app selecionado.</p>
-                </div>
-								
-				<div class="bookmarklet" data-bookmarklet="Open Record Entity list">
-                    <h2>Open Record Entity list</h2>
-                    <a href="#">Open Record Entity list</a>
-                    <p>Abre view da entidade do registro atual.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Get Entity Infos">
-                    <h2>Get Entity Infos</h2>
-                    <a href="#">Get Entity Infos</a>
-                    <p>Recupera informações da entidade atual do Form/View.</p>
-                </div>
-
-				<div class="bookmarklet" data-bookmarklet="Get GUID">
-                    <h2>Get GUID</h2>
-                    <a href="#">Get GUID</a>
-                    <p>Recupera o GUID do registro atual.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Form - Show Lookup Guid on Label">
-                    <h2>Form - Show Lookup Guid on Label</h2>
-                    <a href="#">Form - Show Lookup Guid on Label</a>
-                    <p>Mostra Guids dos campos Lookup na label.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Query Entity Label by Logical Name">
-                    <h2>Query Entity Label by Logical Name</h2>
-                    <a href="#">Query Entity Label by Logical Name</a>
-                    <p>Recupera nome da entidade baseado no nome lógico inserido.</p>
-                </div>
-				
-            </div>
-        </section>
-		
-		<section>
-            <h2>Updates</h2>
-            <div class="bookmarklet-container">
-			
-				<!--Adicionar divs de bookmarklets aqui-->
-                <div class="bookmarklet" data-bookmarklet="Update - Setar registro Ativo">
-                    <h2>Update - Setar registro Ativo</h2>
-                    <a href="#">Update - Setar registro Ativo</a>
-                    <p>Atualiza Status do registro atual para "Ativo".</p>
-                </div>
-				
-            </div>
-        </section>
-		
-        <section>
-            <h2>Diversos</h2>
-            <div class="bookmarklet-container">
-			
-				<!--Adicionar divs de bookmarklets aqui-->
-                <div class="bookmarklet" data-bookmarklet="Enable CommandChecker">
-                    <h2>Enable CommandChecker</h2>
-                    <a href="#">Enable CommandChecker</a>
-                    <p>Ativa o CommandChecker para depuração.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Explorador de Assuntos">
-                    <h2>Explorador de Assuntos</h2>
-                    <a href="#">Explorador de Assuntos</a>
-                    <p>Popup com a árvore de assuntos, permitindo busca, cópia de Guid e subárvore.</p>
-                </div>
-				
-            </div>
-        </section>
-		
-		<section>
-            <h2>Utilidades (não relacionadas ao D365)</h2>
-            <div class="bookmarklet-container">
-			
-				<!--Adicionar divs de bookmarklets aqui-->
-                <div class="bookmarklet" data-bookmarklet="JSON Pretty Print">
-                    <h2>JSON Pretty Print</h2>
-                    <a href="#">JSON Pretty Print</a>
-                    <p>Formatação de JSON.</p>
-                </div>
-				
-            </div>
-        </section>
-		
-		<section>
-            <h2>Arquivados (versões antigas ou substituidas)</h2>
-            <div class="bookmarklet-container">
-			
-				<!--Adicionar divs de bookmarklets aqui-->
-				<div class="bookmarklet" data-bookmarklet="Get Entity Name">
-                    <h2>Get Entity Name</h2>
-                    <a href="#">Get Entity Name</a>
-                    <p>Recupera nome da entidade do form.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Get Entity Plural Name">
-                    <h2>Get Entity Plural Name</h2>
-                    <a href="#">Get Entity Plural Name</a>
-                    <p>Recupera nome plural da entidade do form.</p>
-                </div>
-				
-				<div class="bookmarklet" data-bookmarklet="Open record in selected App v.1">
-                    <h2>Open record in selected App v.1</h2>
-                    <a href="#">Open record in selected App v.1</a>
-                    <p>Abre registro atual no app selecionado.</p>
-                </div>
-				
-            </div>
-        </section>
-		
-    </div>
-    <!--
-    <footer>
-        <p>© 2025 D365 Bookmarklets. Todos os direitos reservados.</p>
-    </footer>
-    -->
+    </script>
 </body>
 </html>
